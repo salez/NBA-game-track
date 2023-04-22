@@ -4,11 +4,11 @@ import { Team } from 'src/app/game-stats/models/team.model';
 import { NbaService } from 'src/app/services/nba.service';
 
 @Component({
-  selector: 'app-team-list',
-  templateUrl: './team-list.component.html',
-  styleUrls: ['./team-list.component.scss']
+  selector: 'app-team-track-list',
+  templateUrl: './team-track-list.component.html',
+  styleUrls: ['./team-track-list.component.scss']
 })
-export class TeamListComponent {
+export class TeamTrackListComponent {
 
   teams$: Observable<Team[]>;
   allTeams: Team[] = [];
