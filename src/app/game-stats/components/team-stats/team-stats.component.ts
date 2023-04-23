@@ -1,9 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Observable, tap} from 'rxjs';
 import { Game } from 'src/app/game-stats/models/game.model';
 import { Stats } from 'src/app/game-stats/models/stats.model';
 import { Team } from 'src/app/game-stats/models/team.model';
 import { NbaService } from 'src/app/services/nba.service';
+import { ModalComponent } from 'src/app/shared/modal/components/modal.component';
 
 @Component({
   selector: 'app-team-stats',

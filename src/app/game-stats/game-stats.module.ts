@@ -4,6 +4,7 @@ import { GameResultsComponent } from './components/game-results/game-results.com
 import { TeamStatsComponent } from './components/team-stats/team-stats.component';
 import { GameStatsRoutingModule } from './game-stats-routing.module';
 import { TeamTrackListComponent } from './components/team-track-list/team-track-list.component';
+import { ModalModule } from '../shared/modal/modal.module';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { TeamTrackListComponent } from './components/team-track-list/team-track-
   ],
   imports: [
     CommonModule,
+    ModalModule,
     GameStatsRoutingModule
   ]
 })

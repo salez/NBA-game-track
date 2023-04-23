@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ViewChildren } from '@angular/core';
 import {Observable, tap} from 'rxjs';
 import { Team } from 'src/app/game-stats/models/team.model';
 import { NbaService } from 'src/app/services/nba.service';
+import { ModalComponent } from 'src/app/shared/modal/components/modal.component';
+import { ModalCloseDirective } from 'src/app/shared/modal/directives/modal-close.directive';
 
 @Component({
   selector: 'app-team-track-list',
@@ -10,8 +12,12 @@ import { NbaService } from 'src/app/services/nba.service';
 })
 export class TeamTrackListComponent {
 
-  teams$: Observable<Team[]>;
-  allTeams: Team[] = [];
+  protected teams$: Observable<Team[]>;
+  protected allTeams: Team[] = [];
+  protected showTest = false;
+
+  @ViewChild(ModalComponent) modal!: ModalComponent;
+  @ViewChildren(ModalCloseDirective) directive!: any;
 
   constructor(protected nbaService: NbaService) {
     this.teams$ = nbaService.getAllTeams().pipe(
@@ -24,4 +30,5 @@ export class TeamTrackListComponent {
     if (team)
       this.nbaService.addTrackedTeam(team);
   }
+
 }
