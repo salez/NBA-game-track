@@ -1,11 +1,7 @@
 <form class="form" [formGroup]="filterForm">
   <div class="row">
     <div class="col-sm-12">
-      <select
-        title="select conference"
-        #conferenceSelect
-        formControlName="conference"
-      >
+      <select title="select conference" formControlName="conference">
         <option value="">All conferences</option>
         <option
           [value]="conference"
@@ -14,11 +10,8 @@
           {{ conference }}
         </option>
       </select>
-      <select
-        title="select division"
-        #divisionSelect
-        formControlName="division"
-      >
+
+      <select title="select division" formControlName="division">
         <option value="">All divisions</option>
         <option
           [value]="division"
@@ -27,12 +20,14 @@
           {{ division }}
         </option>
       </select>
+
       <select title="select team" formControlName="team" #teamSelect required>
         <option value="">Select a team</option>
         <option [value]="team.id" *ngFor="let team of filteredTeams$ | async">
           {{ team.full_name }}
         </option>
       </select>
+
       <button
         [disabled]="!filterForm.valid"
         class="primary"
@@ -41,8 +36,14 @@
         Track team
       </button>
     </div>
-    <div class="col-sm-12">
-      <select title="select team" formControlName="gameCount" #daysFilter (change)="nbaService.setGameCount(+daysFilter.value)">
+    <div class="col-sm-12 show-filters">
+      Show results of past
+      <select
+        title="select team"
+        formControlName="gameCount"
+        #daysFilter
+        (change)="nbaService.setGameCount(+daysFilter.value)"
+      >
         <option *ngFor="let days of FILTER_DAYS_RANGE" [value]="days">
           {{ days }}
         </option>
@@ -53,7 +54,7 @@
 </form>
 
 <app-modal #alreadyTrackedModal>
-  <ng-container modal-content> Team already tracked! </ng-container>
+  <ng-container modal-content>Team already tracked!</ng-container>
   <ng-container modal-actions>
     <button modal-close>OK</button>
   </ng-container>

@@ -76,6 +76,10 @@ export class TeamTrackFiltersComponent {
   }
 
   trackTeam(teamId: string): boolean {
-    return this.nbaService.addTrackedTeam(+teamId);
+    if(!this.nbaService.addTrackedTeam(+teamId))
+      return false;
+
+    this.resetTeam();
+    return true;
   }
 }

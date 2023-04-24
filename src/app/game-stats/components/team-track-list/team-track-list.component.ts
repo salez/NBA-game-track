@@ -8,9 +8,6 @@ import { NbaService } from 'src/app/services/nba.service';
   styleUrls: ['./team-track-list.component.scss']
 })
 export class TeamTrackListComponent {
-
-  daysFilter: number = 12;
-
   constructor(
     protected nbaService: NbaService,
   ) {}
