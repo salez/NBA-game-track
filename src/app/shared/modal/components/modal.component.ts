@@ -1,22 +1,21 @@
-import { AfterContentInit, Component, ContentChildren, ElementRef, HostBinding, OnDestroy, QueryList, Renderer2, ViewChild } from '@angular/core';
-import { from, fromEvent, mergeMap, Observable, of, startWith, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { AfterContentInit, ChangeDetectionStrategy, Component, ContentChildren, ElementRef, OnDestroy, QueryList, ViewChild } from '@angular/core';
+import { from, fromEvent, mergeMap, Observable, startWith, Subject, switchMap, takeUntil } from 'rxjs';
 import { ModalCloseDirective } from '../directives/modal-close.directive';
 
 @Component({
   selector: 'app-modal',
   templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.scss']
+  styleUrls: ['./modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ModalComponent implements AfterContentInit, OnDestroy {
 
-  @ContentChildren(ModalCloseDirective, { read: ElementRef, descendants: true }) closeElements!: QueryList<ElementRef>;
+  @ContentChildren(ModalCloseDirective, { read: ElementRef<HTMLElement>, descendants: true }) closeElements!: QueryList<ElementRef<HTMLElement>>;
   @ViewChild('dialog') dialog!: ElementRef<HTMLDialogElement>;
 
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private renderer: Renderer2
-  ) {
+  constructor() {
   }
 
   ngAfterContentInit(): void {
@@ -24,11 +23,11 @@ export class ModalComponent implements AfterContentInit, OnDestroy {
   }
 
   private listenToCloseEvents() {
-    (this.closeElements.changes as Observable<QueryList<ElementRef>>).pipe(
+    (this.closeElements.changes as Observable<QueryList<ElementRef<HTMLElement>>>).pipe(
       takeUntil(this.destroy$),
       startWith(this.closeElements),
       switchMap((elements) => from(elements.toArray())),
-      mergeMap((element) =>  fromEvent(element.nativeElement, 'click'))
+      mergeMap((element) => fromEvent(element.nativeElement, 'click'))
     ).subscribe(() => {
       this.close();
     })
