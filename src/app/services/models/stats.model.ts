@@ -1,5 +1,3 @@
-import { Result } from "./game.model";
-
 export interface Stats {
   wins: number;
   losses: number;
@@ -8,4 +6,4 @@ export interface Stats {
   lastGames: Result[];
 }
 
-
+export type Result = 'W' | 'L';

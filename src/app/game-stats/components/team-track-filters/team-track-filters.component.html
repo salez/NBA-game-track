@@ -1,0 +1,60 @@
+<form class="form" [formGroup]="filterForm">
+  <div class="row">
+    <div class="col-sm-12">
+      <select
+        title="select conference"
+        #conferenceSelect
+        formControlName="conference"
+      >
+        <option value="">All conferences</option>
+        <option
+          [value]="conference"
+          *ngFor="let conference of conferences$ | async"
+        >
+          {{ conference }}
+        </option>
+      </select>
+      <select
+        title="select division"
+        #divisionSelect
+        formControlName="division"
+      >
+        <option value="">All divisions</option>
+        <option
+          [value]="division"
+          *ngFor="let division of filteredDivisions$ | async"
+        >
+          {{ division }}
+        </option>
+      </select>
+      <select title="select team" formControlName="team" #teamSelect required>
+        <option value="">Select a team</option>
+        <option [value]="team.id" *ngFor="let team of filteredTeams$ | async">
+          {{ team.full_name }}
+        </option>
+      </select>
+      <button
+        [disabled]="!filterForm.valid"
+        class="primary"
+        (click)="trackTeam(teamSelect.value) || alreadyTrackedModal.open()"
+      >
+        Track team
+      </button>
+    </div>
+    <div class="col-sm-12">
+      <select title="select team" formControlName="gameCount" #daysFilter (change)="nbaService.setGameCount(+daysFilter.value)">
+        <option *ngFor="let days of FILTER_DAYS_RANGE" [value]="days">
+          {{ days }}
+        </option>
+      </select>
+      days
+    </div>
+  </div>
+</form>
+
+<app-modal #alreadyTrackedModal>
+  <ng-container modal-content> Team already tracked! </ng-container>
+  <ng-container modal-actions>
+    <button modal-close>OK</button>
+  </ng-container>
+</app-modal>

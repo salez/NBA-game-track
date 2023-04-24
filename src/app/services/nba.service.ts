@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, map, Observable, share, shareReplay, switchMap, tap } from 'rxjs';
 import { format, subDays } from 'date-fns';
-import { Team } from '../game-stats/models/team.model';
-import { Game } from '../game-stats/models/game.model';
-import { Stats } from '../game-stats/models/stats.model';
+import { Game } from './models/game.model';
+import { Division, Team, TeamDataCollection } from './models/team.model';
+import { Stats } from './models/stats.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +18,32 @@ export class NbaService {
   private API_URL = "https://free-nba.p.rapidapi.com";
   trackedTeams: Team[] = [];
 
+  private _teamsDataCollection$: BehaviorSubject<TeamDataCollection> = new BehaviorSubject<TeamDataCollection>({ teams: [], conferences: [], divisions: [] });
+  teamsDataCollection$: Observable<TeamDataCollection> = this._teamsDataCollection$.asObservable();
+
+  private _gameCount$: BehaviorSubject<number> = new BehaviorSubject<number>(12);
+  gameCount$: Observable<number> = this._gameCount$.pipe(distinctUntilChanged());
+
   constructor(private http: HttpClient) { }
 
-  addTrackedTeam(team: Team): void {
-    this.trackedTeams.push(team);
+  addTrackedTeam(teamId: number): boolean {
+    if (this.trackedTeams.some(t => t.id == teamId)) {
+      return false;
+    }
+
+    const team = this._teamsDataCollection$.value?.teams.find(t => t.id == teamId);
+    if (team)
+      this.trackedTeams.push(team);
+
+    return true;
+  }
+
+  setGameCount(gameCount: number): void {
+    this._gameCount$.next(gameCount);
+  }
+
+  getCurrentGameCount(): number {
+    return this._gameCount$.getValue();
   }
 
   removeTrackedTeam(team: Team): void {
@@ -33,10 +55,31 @@ export class NbaService {
     return this.trackedTeams;
   }
 
-  getAllTeams(): Observable<Team[]> {
+  private getTeamDataCollection(teams: Team[]): TeamDataCollection {
+    const conferences = [...new Set(teams.map(team => team.conference))].sort();
+    const divisions: Division[] = [];
+    teams.forEach(team => {
+      const { conference, division } = team;
+      if (!divisions.some(d => d.conference === conference && d.name === division)) {
+        divisions.push({ name: division, conference });
+      }
+    });
+    return {
+      conferences,
+      divisions,
+      teams
+    };
+  }
+
+  getTeams(): Observable<TeamDataCollection> {
     return this.http.get<{ data: Team[] }>(`${this.API_URL}/teams?page=0`,
       { headers: this.headers }).pipe(
-        map(res => res.data)
+        map(res => res.data),
+        switchMap(teams => {
+          this._teamsDataCollection$.next(this.getTeamDataCollection(teams));
+          return this.teamsDataCollection$;
+        }),
+        shareReplay(1),
       );
   }
 
@@ -57,8 +100,12 @@ export class NbaService {
       stats.averagePointsScored += gameStats.averagePointsScored;
       stats.lastGames.push(gameStats.wins == 1 ? 'W' : 'L');
     });
-    stats.averagePointsScored = Math.round(stats.averagePointsScored / games.length);
-    stats.averagePointsConceded = Math.round(stats.averagePointsConceded / games.length);
+
+    if (games.length > 0) {
+      stats.averagePointsScored = Math.round(stats.averagePointsScored / games.length);
+      stats.averagePointsConceded = Math.round(stats.averagePointsConceded / games.length);
+    }
+
     return stats;
   }
 

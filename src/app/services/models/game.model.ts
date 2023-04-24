@@ -13,5 +13,3 @@ export interface Game {
   visitor_team: Team;
   visitor_team_score: number;
 }
-
-export type Result = 'W' | 'L';
