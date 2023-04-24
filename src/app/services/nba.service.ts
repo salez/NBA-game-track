@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, distinctUntilChanged, map, Observable, share, shareReplay, switchMap, tap } from 'rxjs';
 import { format, subDays } from 'date-fns';
-import { Game } from './models/game.model';
-import { Division, Team, TeamDataCollection } from './models/team.model';
-import { Stats } from './models/stats.model';
+import { Game } from '../game-stats/models/game.model';
+import { Division, Team, TeamDataCollection } from '../game-stats/models/team.model';
+import { Stats } from '../game-stats/models/stats.model';
 
 @Injectable({
   providedIn: 'root'

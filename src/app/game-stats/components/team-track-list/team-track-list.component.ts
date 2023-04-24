@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Team } from 'src/app/services/models/team.model';
-import { NbaService } from 'src/app/services/nba.service';
+import { NbaService } from '@services/nba.service';
+import { Team } from '../../models/team.model';
 
 @Component({
   selector: 'app-team-track-list',

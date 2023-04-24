@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { NbaService } from '@services/nba.service';
 import { combineLatest, map, Observable, startWith, switchMap, tap } from 'rxjs';
-import { Team, TeamDataCollection } from 'src/app/services/models/team.model';
-import { NbaService } from 'src/app/services/nba.service';
+import { Team, TeamDataCollection } from '../../models/team.model';
 
 @Component({
   selector: 'app-team-track-filters',

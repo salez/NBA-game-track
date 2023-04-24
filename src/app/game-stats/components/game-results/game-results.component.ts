@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NbaService } from '@services/nba.service';
 import { EMPTY, Observable, switchMap } from 'rxjs';
-import { Game } from 'src/app/services/models/game.model';
-import { Team } from 'src/app/services/models/team.model';
-import { NbaService } from 'src/app/services/nba.service';
+import { Game } from '../../models/game.model';
+import { Team } from '../../models/team.model';
 
 @Component({
   selector: 'app-game-results',

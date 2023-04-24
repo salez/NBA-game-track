@@ -1,9 +1,9 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {BehaviorSubject, distinctUntilChanged, Observable, switchMap, tap} from 'rxjs';
-import { Game } from 'src/app/services/models/game.model';
-import { Stats } from 'src/app/services/models/stats.model';
-import { Team } from 'src/app/services/models/team.model';
-import { NbaService } from 'src/app/services/nba.service';
+import {Component, Input, OnInit} from '@angular/core';
+import { NbaService } from '@services/nba.service';
+import {Observable, switchMap, tap} from 'rxjs';
+import { Game } from '../../models/game.model';
+import { Stats } from '../../models/stats.model';
+import { Team } from '../../models/team.model';
 
 @Component({
   selector: 'app-team-stats',
