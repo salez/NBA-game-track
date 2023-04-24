@@ -9,8 +9,8 @@
   <hr />
   <div class="container">
     <div class="row">
-      <div class="col-sm-6">
-        <p>Results of past 12 days:</p>
+      <div class="col-sm-6"> 
+        <p>Results of past {{ nbaService.gameCount$ | async }} days:</p>
         <p>
           <mark
             class="tag"
@@ -18,7 +18,7 @@
             [class]="result"
             >{{ result }}</mark
           >
-        </p>
+        </p> 
         <p>
           Avg pts scored: <strong>{{ stats.averagePointsScored }}</strong>
         </p>
@@ -27,11 +27,12 @@
         </p>
       </div>
       <div class="col-sm-6">
-        <img alt="{{ team.full_name }} logo"
+        <img
+          alt="{{ team.full_name }} logo"
           src="https://interstate21.com/nba-logos/{{ team.abbreviation }}.png"
         />
       </div>
-    </div> 
+    </div>
   </div>
   <div>
     <button class="tertiary" [routerLink]="'./results/' + team.abbreviation">
@@ -41,9 +42,13 @@
 </div>
 
 <app-modal #confirmRemoveModal>
-  <ng-container modal-content>Are you sure you want to delete this team?</ng-container>
+  <ng-container modal-content
+    >Are you sure you want to delete this team?</ng-container
+  >
   <ng-container modal-actions>
     <button modal-close>No</button>
-    <button modal-close (click)="nbaService.removeTrackedTeam(team)">Yes</button>
+    <button modal-close (click)="nbaService.removeTrackedTeam(team)">
+      Yes
+    </button>
   </ng-container>
 </app-modal>
